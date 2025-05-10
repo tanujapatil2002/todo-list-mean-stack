@@ -1,0 +1,84 @@
+<div class="task-container">
+    <h2>Tasks</h2>
+    
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" placeholder="Search..." #searchInput>
+      <button (click)="search(searchInput.value)">Search</button>
+    </div>
+  
+    <!-- Add Task Form -->
+    <div class="task-form" *ngIf="!editingTask">
+      <input [(ngModel)]="newTask.title" placeholder="Title" required>
+      <input [(ngModel)]="newTask.assignedTo" placeholder="Assigned To">
+      <select [(ngModel)]="newTask.status">
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+      <input type="date" [(ngModel)]="newTask.dueDate">
+      <select [(ngModel)]="newTask.priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      <button (click)="createTask()">Add Task</button>
+    </div>
+  
+    <!-- Edit Task Form (shown when editing) -->
+    <div class="task-form" *ngIf="editingTask">
+      <h3>Edit Task</h3>
+      <input [(ngModel)]="editingTask.title" placeholder="Title" required>
+      <input [(ngModel)]="editingTask.assignedTo" placeholder="Assigned To">
+      <select [(ngModel)]="editingTask.status">
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+      <input type="date" [(ngModel)]="editingTask.dueDate">
+      <select [(ngModel)]="editingTask.priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      <button (click)="updateTask()">Save Changes</button>
+      <button (click)="cancelEdit()">Cancel</button>
+    </div>
+  
+    <!-- Tasks Table -->
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>Completed</th>
+          <th>Title</th>
+          <th>Assigned To</th>
+          <th>Status</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td><input type="checkbox" [(ngModel)]="task.completed" (change)="toggleTaskCompletion(task)"></td>
+          <td>{{ task.title }}</td>
+          <td>{{ task.assignedTo }}</td>
+          <td>{{ task.status }}</td>
+          <td>{{ task.dueDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ task.priority }}</td>
+          <td>
+            <button (click)="startEdit(task)">Edit</button>
+            <button (click)="deleteTask(task._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Pagination -->
+    <div class="pagination">
+      <button (click)="goToFirst()">First</button>
+      <button (click)="goToPrev()">Prev</button>
+      <button (click)="goToNext()">Next</button>
+      <button (click)="goToLast()">Last</button>
+    </div>
+  </div>
